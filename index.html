@@ -8,57 +8,46 @@
 </head>
 <body>
 
-    <div class="background-glow"></div>
+    <!-- Dynamic Background Image with Nature Theme -->
+    <div class="bg-overlay"></div>
 
-    <div class="main-wrapper">
-        <header>
-            <div class="logo">
+    <div class="app-container">
+        <!-- Top Navigation / Header -->
+        <header class="top-nav">
+            <div class="brand">
                 <span class="signal-icon">📶</span>
-                <h1>Wi-Fi Calling Monitor</h1>
+                <h2>Wi-Fi Calling Diagnostic</h2>
             </div>
-            <p class="subtitle">Real-Time Network Latency & Quality Diagnostics</p>
+            <div id="statusBadge" class="badge checking">Connecting...</div>
         </header>
 
-        <main class="dashboard-grid">
-            <div class="ping-card">
+        <!-- Main Hero Section (Full Screen Ping Focus) -->
+        <main class="hero-section">
+            <div class="ping-hero-card">
                 <div class="pulse-ring" id="pulseRing"></div>
-                <div class="ping-content">
-                    <span class="card-label">CURRENT LATENCY</span>
-                    <div class="ping-display">
+                <div class="ping-hero-content">
+                    <span class="hero-label">CURRENT LATENCY</span>
+                    <div class="giant-ping">
                         <span id="pingValue">--</span>
                         <span class="unit">ms</span>
                     </div>
-                    <div class="live-indicator">
-                        <span class="dot"></span>
-                        <span id="liveText">LIVE MONITORING</span>
+                    <div class="live-pill">
+                        <span class="blinking-dot"></span>
+                        <span id="statusTitle">Checking Speed...</span>
                     </div>
                 </div>
             </div>
 
-            <div class="status-card">
-                <div class="card-header">
-                    <span class="card-label">NETWORK STATUS</span>
-                    <div id="statusBadge" class="badge checking">Connecting...</div>
-                </div>
-                
-                <div class="status-info">
-                    <h2 id="statusTitle">Analyzing Connection...</h2>
-                    <p id="statusDesc">Fetching real-time packet latency from edge nodes.</p>
-                </div>
-
-                <div class="download-box">
-                    <div class="download-text">
-                        <h3>Get Mobile App</h3>
-                        <p>Background alerts & real-time audio notifications</p>
-                    </div>
-                    <a href="wifi-monitor.apk" download class="btn-download">
-                        <span class="btn-icon">⚡</span>
-                        <span>Download APK</span>
-                    </a>
-                </div>
+            <!-- Status Details Bar -->
+            <div class="info-bar">
+                <p id="statusDesc">Analyzing your Wi-Fi signal response time in real-time...</p>
+                <a href="wifi-monitor.apk" download class="btn-download-app">
+                    <span>📥 Download App (APK)</span>
+                </a>
             </div>
         </main>
 
+        <!-- Premium Footer -->
         <footer>
             <p>Designed & Developed by <strong>Kartik Upadhyay</strong></p>
             <p class="copyright">&copy; 2026 Kartik Upadhyay. All rights reserved.</p>
@@ -84,23 +73,26 @@
                 if (duration < 100) {
                     statusBadgeEl.innerText = 'OPTIMAL';
                     statusBadgeEl.className = 'badge optimal';
-                    statusTitleEl.innerText = 'Wi-Fi Calling Smooth';
-                    statusDescEl.innerText = 'Your latency is low enough for crystal clear voice calls.';
-                    pulseRingEl.style.borderColor = 'rgba(74, 222, 128, 0.4)';
+                    statusTitleEl.innerText = 'Wi-Fi Calling Excellent';
+                    statusDescEl.innerText = 'Low latency detected. Voice calls will run smoothly without disconnections.';
+                    pulseRingEl.style.borderColor = 'rgba(74, 222, 128, 0.5)';
+                    pingValueEl.style.color = '#4ade80';
                 } else {
-                    statusBadgeEl.innerText = 'HIGH LATENCY';
+                    statusBadgeEl.innerText = 'HIGH PING';
                     statusBadgeEl.className = 'badge poor';
-                    statusTitleEl.innerText = 'Calls May Disconnect';
-                    statusDescEl.innerText = 'High response time detected. Move closer to your Wi-Fi router.';
-                    pulseRingEl.style.borderColor = 'rgba(248, 113, 113, 0.4)';
+                    statusTitleEl.innerText = 'High Latency Detected';
+                    statusDescEl.innerText = 'High response time. Wi-Fi calling might freeze or drop.';
+                    pulseRingEl.style.borderColor = 'rgba(248, 113, 113, 0.5)';
+                    pingValueEl.style.color = '#f87171';
                 }
             } catch (error) {
                 pingValueEl.innerText = 'ERR';
                 statusBadgeEl.innerText = 'OFFLINE';
                 statusBadgeEl.className = 'badge offline';
-                statusTitleEl.innerText = 'No Internet Connection';
-                statusDescEl.innerText = 'Please check your Wi-Fi or router connection.';
-                pulseRingEl.style.borderColor = 'rgba(148, 163, 184, 0.2)';
+                statusTitleEl.innerText = 'Disconnected';
+                statusDescEl.innerText = 'Please check your internet connection or Wi-Fi router.';
+                pulseRingEl.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                pingValueEl.style.color = '#cbd5e1';
             }
         }
 
