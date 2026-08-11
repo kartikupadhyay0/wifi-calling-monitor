@@ -45,6 +45,14 @@
                 </div>
             </div>
 
+            <!-- Sound Enable Button Control -->
+            <div class="sound-control-box">
+                <button id="soundBtn" class="btn-sound" onclick="toggleAudio()">
+                    <span id="soundIcon">🔔</span>
+                    <span id="soundBtnText">Press this button to enable audio alerts on high ping or network issues</span>
+                </button>
+            </div>
+
             <!-- Status Details Bar -->
             <div class="info-bar">
                 <p id="statusDesc">Analyzing your Wi-Fi signal response time in real-time...</p>
@@ -62,6 +70,61 @@
     </div>
 
     <script>
+        let audioCtx = null;
+        let isAudioEnabled = false;
+
+        // Function to toggle/enable Audio Context on explicit button click
+        function toggleAudio() {
+            const btn = document.getElementById('soundBtn');
+            const icon = document.getElementById('soundIcon');
+            const btnText = document.getElementById('soundBtnText');
+
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            isAudioEnabled = !isAudioEnabled;
+
+            if (isAudioEnabled) {
+                btn.classList.add('enabled');
+                icon.innerText = '🔊';
+                btnText.innerText = 'Sound Alerts Enabled (Will beep on high ping/network drop)';
+                playWarningBeep(); // Test beep when enabled
+            } else {
+                btn.classList.remove('enabled');
+                icon.innerText = '🔔';
+                btnText.innerText = 'Press this button to enable audio alerts on high ping or network issues';
+            }
+        }
+
+        // Function to play alert beep sound using Web Audio API
+        function playWarningBeep() {
+            if (!audioCtx || !isAudioEnabled) return;
+            
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sawtooth'; // Warning tone
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime); // Pitch (880 Hz)
+
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime); 
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5); 
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.5);
+            } catch (e) {
+                console.log("Audio play error:", e);
+            }
+        }
+
         async function checkPing() {
             const start = performance.now();
             const pingValueEl = document.getElementById('pingValue');
@@ -91,6 +154,9 @@
                     statusDescEl.innerText = 'High response time. Wi-Fi calling might freeze or drop.';
                     pulseRingEl.style.borderColor = 'rgba(248, 113, 113, 0.5)';
                     pingValueEl.style.color = '#f87171';
+                    
+                    // Play warning beep sound if enabled
+                    playWarningBeep();
                 }
             } catch (error) {
                 pingValueEl.innerText = 'ERR';
@@ -100,6 +166,9 @@
                 statusDescEl.innerText = 'Please check your internet connection or Wi-Fi router.';
                 pulseRingEl.style.borderColor = 'rgba(255, 255, 255, 0.2)';
                 pingValueEl.style.color = '#cbd5e1';
+
+                // Play warning beep sound if enabled
+                playWarningBeep();
             }
         }
 

@@ -104,7 +104,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-grow: 1;
-    gap: 30px;
+    gap: 20px;
 }
 
 .ping-hero-card {
@@ -191,6 +191,40 @@ body {
     50% { opacity: 0.3; }
 }
 
+/* Sound Control Button Styling */
+.sound-control-box {
+    margin: 5px 0 10px 0;
+    text-align: center;
+}
+
+.btn-sound {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e2e8f0;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-sound:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(56, 189, 248, 0.5);
+}
+
+.btn-sound.enabled {
+    background: rgba(74, 222, 128, 0.15);
+    border-color: rgba(74, 222, 128, 0.5);
+    color: #4ade80;
+    box-shadow: 0 0 15px rgba(74, 222, 128, 0.2);
+}
+
 /* Info Bar at Bottom of Hero */
 .info-bar {
     display: flex;
@@ -246,13 +280,11 @@ footer .copyright {
     margin-top: 4px;
 }
 
-/* ---------------------------------------------------- */
-/* Mobile Specific Responsive Styling (Compact Mode)    */
-/* ---------------------------------------------------- */
+/* Mobile Responsive Styling (Compact Mode) */
 @media (max-width: 768px) {
     .app-container {
         padding: 16px 14px;
-        height: 100dvh; /* Dynamic viewport height for mobile browsers */
+        height: 100dvh;
     }
 
     .top-nav {
@@ -260,58 +292,21 @@ footer .copyright {
         border-radius: 16px;
     }
 
-    .brand {
-        gap: 10px;
-    }
+    .brand { gap: 10px; }
+    .brand-icon { width: 32px; height: 32px; }
+    .brand-icon svg { width: 18px; height: 18px; }
+    .brand h2 { font-size: 15px; }
+    .badge { padding: 6px 12px; font-size: 11px; }
 
-    .brand-icon {
-        width: 32px;
-        height: 32px;
-    }
+    .hero-section { gap: 15px; }
+    .ping-hero-card { width: 250px; height: 250px; }
+    .giant-ping { font-size: 70px; margin: 4px 0; }
+    .giant-ping .unit { font-size: 20px; }
+    .hero-label { font-size: 10px; }
+    .live-pill { padding: 6px 14px; font-size: 12px; }
 
-    .brand-icon svg {
-        width: 18px;
-        height: 18px;
-    }
+    .btn-sound { font-size: 11px; padding: 8px 14px; }
 
-    .brand h2 {
-        font-size: 15px;
-    }
-
-    .badge {
-        padding: 6px 12px;
-        font-size: 11px;
-    }
-
-    .hero-section {
-        gap: 20px;
-    }
-
-    /* Circle Ring Compact for Mobile */
-    .ping-hero-card {
-        width: 260px;
-        height: 260px;
-    }
-
-    .giant-ping {
-        font-size: 72px;
-        margin: 4px 0;
-    }
-
-    .giant-ping .unit {
-        font-size: 20px;
-    }
-
-    .hero-label {
-        font-size: 10px;
-    }
-
-    .live-pill {
-        padding: 6px 14px;
-        font-size: 12px;
-    }
-
-    /* Bottom Info Card Compact for Mobile */
     .info-bar {
         padding: 14px 18px;
         flex-direction: column;
@@ -320,23 +315,9 @@ footer .copyright {
         border-radius: 16px;
     }
 
-    .info-bar p {
-        font-size: 13px;
-        line-height: 1.4;
-    }
+    .info-bar p { font-size: 13px; line-height: 1.4; }
+    .btn-download-app { width: 100%; text-align: center; padding: 10px 16px; font-size: 13px; }
 
-    .btn-download-app {
-        width: 100%;
-        text-align: center;
-        padding: 10px 16px;
-        font-size: 13px;
-    }
-
-    footer {
-        font-size: 12px;
-    }
-
-    footer .copyright {
-        font-size: 10px;
-    }
+    footer { font-size: 12px; }
+    footer .copyright { font-size: 10px; }
 }
