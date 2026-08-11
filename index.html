@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wi-Fi Calling Health Monitor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="card">
+        <h1>📶 Wi-Fi Calling Monitor</h1>
+        <p>Real-time Wi-Fi Network Stability Test</p>
+
+        <div class="stat-box">
+            <div class="stat">
+                <div class="stat-title">Latency (Ping)</div>
+                <div class="stat-value" id="pingValue">-- ms</div>
+            </div>
+            <div class="stat">
+                <div class="stat-title">Status</div>
+                <div id="statusText" style="font-size: 18px; margin-top: 5px;">Checking...</div>
+            </div>
+        </div>
+
+        <div id="badge" class="status-badge good">Checking Network Status...</div>
+
+        <hr>
+
+        <div class="download-section">
+            <h3>Download Mobile App</h3>
+            <p>Get background alerts & real-time audio beep notifications</p>
+            <a href="wifi-monitor.apk" download class="btn-download">📥 Download App (APK)</a>
+        </div>
+    </div>
+
+    <script>
+        async function checkPing() {
+            const start = performance.now();
+            const pingValueEl = document.getElementById('pingValue');
+            const statusTextEl = document.getElementById('statusText');
+            const badgeEl = document.getElementById('badge');
+
+            try {
+                await fetch('https://www.cloudflare.com/cdn-cgi/trace', { mode: 'no-cors', cache: 'no-store' });
+                const end = performance.now();
+                const duration = Math.round(end - start);
+
+                pingValueEl.innerText = duration + ' ms';
+
+                if (duration < 100) {
+                    statusTextEl.innerText = 'Optimal 🟢';
+                    statusTextEl.style.color = '#4ade80';
+                    badgeEl.innerText = 'Wi-Fi Calling will work smoothly';
+                    badgeEl.className = 'status-badge good';
+                } else {
+                    statusTextEl.innerText = 'Poor 🔴';
+                    statusTextEl.style.color = '#fca5a5';
+                    badgeEl.innerText = 'High Latency: Calls may disconnect';
+                    badgeEl.className = 'status-badge bad';
+                }
+            } catch (error) {
+                pingValueEl.innerText = 'Error';
+                statusTextEl.innerText = 'Offline ❌';
+                badgeEl.innerText = 'No Internet Connection';
+                badgeEl.className = 'status-badge bad';
+            }
+        }
+
+        setInterval(checkPing, 3000);
+        checkPing();
+    </script>
+</body>
+</html>
