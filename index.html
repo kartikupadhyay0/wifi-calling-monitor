@@ -8,62 +8,99 @@
 </head>
 <body>
 
-    <div class="card">
-        <h1>📶 Wi-Fi Calling Monitor</h1>
-        <p>Real-time Wi-Fi Network Stability Test</p>
+    <div class="background-glow"></div>
 
-        <div class="stat-box">
-            <div class="stat">
-                <div class="stat-title">Latency (Ping)</div>
-                <div class="stat-value" id="pingValue">-- ms</div>
+    <div class="main-wrapper">
+        <header>
+            <div class="logo">
+                <span class="signal-icon">📶</span>
+                <h1>Wi-Fi Calling Monitor</h1>
             </div>
-            <div class="stat">
-                <div class="stat-title">Status</div>
-                <div id="statusText" style="font-size: 18px; margin-top: 5px;">Checking...</div>
+            <p class="subtitle">Real-Time Network Latency & Quality Diagnostics</p>
+        </header>
+
+        <main class="dashboard-grid">
+            <div class="ping-card">
+                <div class="pulse-ring" id="pulseRing"></div>
+                <div class="ping-content">
+                    <span class="card-label">CURRENT LATENCY</span>
+                    <div class="ping-display">
+                        <span id="pingValue">--</span>
+                        <span class="unit">ms</span>
+                    </div>
+                    <div class="live-indicator">
+                        <span class="dot"></span>
+                        <span id="liveText">LIVE MONITORING</span>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div id="badge" class="status-badge good">Checking Network Status...</div>
+            <div class="status-card">
+                <div class="card-header">
+                    <span class="card-label">NETWORK STATUS</span>
+                    <div id="statusBadge" class="badge checking">Connecting...</div>
+                </div>
+                
+                <div class="status-info">
+                    <h2 id="statusTitle">Analyzing Connection...</h2>
+                    <p id="statusDesc">Fetching real-time packet latency from edge nodes.</p>
+                </div>
 
-        <hr>
+                <div class="download-box">
+                    <div class="download-text">
+                        <h3>Get Mobile App</h3>
+                        <p>Background alerts & real-time audio notifications</p>
+                    </div>
+                    <a href="wifi-monitor.apk" download class="btn-download">
+                        <span class="btn-icon">⚡</span>
+                        <span>Download APK</span>
+                    </a>
+                </div>
+            </div>
+        </main>
 
-        <div class="download-section">
-            <h3>Download Mobile App</h3>
-            <p>Get background alerts & real-time audio beep notifications</p>
-            <a href="wifi-monitor.apk" download class="btn-download">📥 Download App (APK)</a>
-        </div>
+        <footer>
+            <p>Designed & Developed by <strong>Kartik Upadhyay</strong></p>
+            <p class="copyright">&copy; 2026 Kartik Upadhyay. All rights reserved.</p>
+        </footer>
     </div>
 
     <script>
         async function checkPing() {
             const start = performance.now();
             const pingValueEl = document.getElementById('pingValue');
-            const statusTextEl = document.getElementById('statusText');
-            const badgeEl = document.getElementById('badge');
+            const statusBadgeEl = document.getElementById('statusBadge');
+            const statusTitleEl = document.getElementById('statusTitle');
+            const statusDescEl = document.getElementById('statusDesc');
+            const pulseRingEl = document.getElementById('pulseRing');
 
             try {
                 await fetch('https://www.cloudflare.com/cdn-cgi/trace', { mode: 'no-cors', cache: 'no-store' });
                 const end = performance.now();
                 const duration = Math.round(end - start);
 
-                pingValueEl.innerText = duration + ' ms';
+                pingValueEl.innerText = duration;
 
                 if (duration < 100) {
-                    statusTextEl.innerText = 'Optimal 🟢';
-                    statusTextEl.style.color = '#4ade80';
-                    badgeEl.innerText = 'Wi-Fi Calling will work smoothly';
-                    badgeEl.className = 'status-badge good';
+                    statusBadgeEl.innerText = 'OPTIMAL';
+                    statusBadgeEl.className = 'badge optimal';
+                    statusTitleEl.innerText = 'Wi-Fi Calling Smooth';
+                    statusDescEl.innerText = 'Your latency is low enough for crystal clear voice calls.';
+                    pulseRingEl.style.borderColor = 'rgba(74, 222, 128, 0.4)';
                 } else {
-                    statusTextEl.innerText = 'Poor 🔴';
-                    statusTextEl.style.color = '#fca5a5';
-                    badgeEl.innerText = 'High Latency: Calls may disconnect';
-                    badgeEl.className = 'status-badge bad';
+                    statusBadgeEl.innerText = 'HIGH LATENCY';
+                    statusBadgeEl.className = 'badge poor';
+                    statusTitleEl.innerText = 'Calls May Disconnect';
+                    statusDescEl.innerText = 'High response time detected. Move closer to your Wi-Fi router.';
+                    pulseRingEl.style.borderColor = 'rgba(248, 113, 113, 0.4)';
                 }
             } catch (error) {
-                pingValueEl.innerText = 'Error';
-                statusTextEl.innerText = 'Offline ❌';
-                badgeEl.innerText = 'No Internet Connection';
-                badgeEl.className = 'status-badge bad';
+                pingValueEl.innerText = 'ERR';
+                statusBadgeEl.innerText = 'OFFLINE';
+                statusBadgeEl.className = 'badge offline';
+                statusTitleEl.innerText = 'No Internet Connection';
+                statusDescEl.innerText = 'Please check your Wi-Fi or router connection.';
+                pulseRingEl.style.borderColor = 'rgba(148, 163, 184, 0.2)';
             }
         }
 
